@@ -64,12 +64,14 @@ class BayesClassifier:
         # print(fName)
         # text = self.load_file(os.path.join(self.training_data_directory, fName))
         # print(text)
-
+        # tokens = self.tokenize(text)
+        # print(tokens)
         # *Tip:* training can take a while, to make it more transparent, we can use the
         # enumerate function, which loops over something and has an automatic counter.
         # write something like this to track progress (note the `# type: ignore` comment
         # which tells mypy we know better and it shouldn't complain at us on this line):
         for index, filename in enumerate(files, 1): # type: ignore
+            print("--------------------------------------")
             print(f"Training on file {index} of {len(files)}")
             print(filename)
             text = self.load_file(os.path.join(self.training_data_directory, filename))
@@ -92,12 +94,15 @@ class BayesClassifier:
             print(filename.startswith(self.neg_file_prefix))
             tokens = self.tokenize(text)
             print(tokens)
+
         # Updating frequences: to update the frequencies for each file, you need to get
         # the text of the file, tokenize it, then update the appropriate dictionary for
         # those tokens. We've asked you to write a function `update_dict` that will make
         # your life easier here. Write that function first then pass it your list of
         # tokens from the file and the appropriate dictionary
+            self.update_dict(tokens, self.pos_freqs)
         
+        print(self.pos_freqs)
 
         # for debugging purposes, it might be useful to print out the tokens and their
         # frequencies for both the positive and negative dictionaries
@@ -231,7 +236,12 @@ class BayesClassifier:
             freqs - dictionary of frequencies to update
         """
         # TODO: your work here
-        pass  # remove this line once you've implemented this method
+        for word in words:
+            # print(word)
+            if word in freqs:
+                freqs[word] += 1 
+            else:
+                freqs[word] = 1       
 
 
 if __name__ == "__main__":
